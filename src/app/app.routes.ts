@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GradebookComponent } from './gradebook/gradebook.component';
-import { GroupsComponent } from './groups/groups.component';
-import { StudentsComponent } from './students/students.component';
+import { GradebookComponent } from '../trash/gradebook/gradebook.component';
+import { GroupsComponent } from '../trash/groups/groups.component';
+import { StudentsComponent } from '../trash/students/students.component';
 
 export const routes: Routes = [
   { path: '', component: GradebookComponent},
