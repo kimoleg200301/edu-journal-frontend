@@ -5,6 +5,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import {routerReducer} from '@ngrx/router-store';
+import {provideHttpClient} from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
       { eventCoalescing: true }
     ),
     provideRouter(routes),
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
+    provideHttpClient()
   ]
 };
