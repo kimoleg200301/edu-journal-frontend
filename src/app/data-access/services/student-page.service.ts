@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {StudentList} from '../interfaces/student-list.interface';
+import {StudentList} from '../interfaces/student-page.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StudentListService {
+export class StudentPageService {
   http = inject(HttpClient);
   baseApiUrl = 'http://localhost:8080/api/v1/students/';
   getStudentList() {
