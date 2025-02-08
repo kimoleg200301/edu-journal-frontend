@@ -7,7 +7,6 @@ import {GroupList} from '../../../data-access/interfaces/group-page.interface';
   imports: [],
   standalone: true,
   templateUrl: './group-page.component.html',
-  styleUrl: './group-page.component.css'
 })
 export class GroupPageComponent {
   groupPageService = inject(GroupPageService);

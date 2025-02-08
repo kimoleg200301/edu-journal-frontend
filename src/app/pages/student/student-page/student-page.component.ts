@@ -10,7 +10,6 @@ import {StudentPageService} from '../../../data-access/services/student-page.ser
   ],
   standalone: true,
   templateUrl: './student-page.component.html',
-  styleUrl: './student-page.component.css'
 })
 export class StudentListComponent {
   studentPageService = inject(StudentPageService);

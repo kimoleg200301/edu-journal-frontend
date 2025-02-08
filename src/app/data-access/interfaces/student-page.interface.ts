@@ -8,3 +8,4 @@ export interface StudentList {
   living_adress: string,
   edu_group_id: number
 }
+

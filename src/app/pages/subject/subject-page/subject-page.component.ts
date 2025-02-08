@@ -7,7 +7,6 @@ import {SubjectList} from '../../../data-access/interfaces/subject-page.interfac
   imports: [],
   standalone: true,
   templateUrl: './subject-page.component.html',
-  styleUrl: './subject-page.component.css'
 })
 export class SubjectPageComponent {
   subjectListService = inject(SubjectPageService);
