@@ -6,6 +6,7 @@ import {SelectSubjectPageInterface} from '../../../data-access/interfaces/select
   selector: 'app-select-subject-page',
   imports: [],
   templateUrl: './select-subject-page.component.html',
+  standalone: true
 })
 export class SelectSubjectPageComponent {
   selectSubjectPageService = inject(SelectSubjectPageService);

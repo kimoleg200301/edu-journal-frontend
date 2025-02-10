@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SubjectPageService} from './subject-page.service';
 import {GroupList} from '../interfaces/group-page.interface';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +13,9 @@ export class GroupPageService {
 
   getGroupList () {
     return this.http.get<GroupList[]>(`${this.baseApiUrl}`);
+  }
+
+  getGroupById(): Observable<GroupList> {
+    return this.route
   }
 }

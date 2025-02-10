@@ -6,6 +6,7 @@ import {StudentsInGroup} from '../../../data-access/interfaces/in-group-page.int
   selector: 'app-in-group-page',
   imports: [],
   templateUrl: './in-group-page.component.html',
+  standalone: true
 })
 export class InGroupPageComponent {
   getStudentsInGroup = inject(InGroupPageService);
