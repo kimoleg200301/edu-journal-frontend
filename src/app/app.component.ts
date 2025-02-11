@@ -14,11 +14,12 @@ import {AddStudentPageComponent} from './pages/student/add-student-page/add-stud
 import {
   AddStudentsInGroupPageComponent
 } from './pages/group/add-students-in-group-page/add-students-in-group-page.component';
+import {SlideBarComponent} from './commons/components/navigation/slide-bar/slide-bar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, SubjectPageComponent, StudentListComponent, GroupPageComponent, InGroupPageComponent, SelectGroupPageComponent, SelectSubjectPageComponent, StudentCardPageComponent, SubjectCardPageComponent, GroupCardPageComponent, AddStudentPageComponent, AddStudentsInGroupPageComponent],
+  imports: [RouterOutlet, FormsModule, SubjectPageComponent, StudentListComponent, GroupPageComponent, InGroupPageComponent, SelectGroupPageComponent, SelectSubjectPageComponent, StudentCardPageComponent, SubjectCardPageComponent, GroupCardPageComponent, AddStudentPageComponent, AddStudentsInGroupPageComponent, SlideBarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
   standalone: true
 })
 export class SlideBarComponent {
+  isOpen = false;
+  menuItems = [
+    { label: 'Студенты' },
+    { label: 'Группы' },
+    { label: 'Дисциплины' },
+    { label: 'Журнал' },
+  ];
 
+  toggle() {
+    this.isOpen = !this.isOpen;
+  }
 }
