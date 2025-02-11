@@ -10,11 +10,15 @@ import {SelectSubjectPageComponent} from './pages/journal/select-subject-page/se
 import {StudentCardPageComponent} from './pages/student/student-card-page/student-card-page.component';
 import {SubjectCardPageComponent} from './pages/subject/subject-card-page/subject-card-page.component';
 import {GroupCardPageComponent} from './pages/group/group-card-page/group-card-page.component';
+import {AddStudentPageComponent} from './pages/student/add-student-page/add-student-page.component';
+import {
+  AddStudentsInGroupPageComponent
+} from './pages/group/add-students-in-group-page/add-students-in-group-page.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, SubjectPageComponent, StudentListComponent, GroupPageComponent, InGroupPageComponent, SelectGroupPageComponent, SelectSubjectPageComponent, StudentCardPageComponent, SubjectCardPageComponent, GroupCardPageComponent],
+  imports: [RouterOutlet, FormsModule, SubjectPageComponent, StudentListComponent, GroupPageComponent, InGroupPageComponent, SelectGroupPageComponent, SelectSubjectPageComponent, StudentCardPageComponent, SubjectCardPageComponent, GroupCardPageComponent, AddStudentPageComponent, AddStudentsInGroupPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

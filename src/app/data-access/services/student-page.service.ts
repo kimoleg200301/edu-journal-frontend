@@ -28,7 +28,10 @@ export class StudentPageService {
     );
   }
 
-  saveStudent() {
-
+  saveStudent(data: StudentList): Observable<StudentList> {
+    return this.http.post<StudentList>(`${this.baseApiUrl}/save_student`, data, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
   }
 }

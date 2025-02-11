@@ -1,1 +1,43 @@
-<p>add-student-page works!</p>
+<div class="space-y-10">
+  <div class="container mx-auto my-10 max-w-5xl bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Создание личной карточки студента</h1>
+    <form #studentForm="ngForm" (ngSubmit)="onAddStudent()" novalidate>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <label class="block text-gray-700">Имя</label>
+          <input type="text" [(ngModel)]="newStudent.firstname" name="firstname" class="w-full p-2 border rounded" required placeholder="Имя" />
+        </div>
+        <div>
+          <label class="block text-gray-700">Фамилия</label>
+          <input type="text" [(ngModel)]="newStudent.lastname" name="lastname" class="w-full p-2 border rounded" required placeholder="Фамилия" />
+        </div>
+        <div>
+          <label class="block text-gray-700">Дата Рождения</label>
+          <input type="date" [(ngModel)]="newStudent.birth_date" name="birth_date" class="w-full p-2 border rounded" required />
+        </div>
+        <div>
+          <label class="block text-gray-700">Пол</label>
+          <select [(ngModel)]="newStudent.gender" name="gender" class="w-full p-2 border rounded" required >
+            <option value="Мужской">Мужской</option>
+            <option value="Женский">Женский</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700">ИИН</label>
+          <input type="text" [(ngModel)]="newStudent.iin" name="iin" class="w-full p-2 border rounded" min="12" required placeholder="ИИН" />
+        </div>
+        <div>
+          <label class="block text-gray-700">Адрес проживания</label>
+          <input type="text" [(ngModel)]="newStudent.living_adress" name="living_adress" class="w-full p-2 border rounded" required placeholder="Адрес проживания" />
+        </div>
+        <div>
+          <label class="block text-gray-700">Группа</label>
+          <input type="text" [(ngModel)]="newStudent.edu_group_id" name="edu_group_id" class="w-full p-2 border rounded" placeholder="Группа" />
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end space-x-4">
+        <button type="submit" class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" [disabled]="studentForm.invalid" >Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
