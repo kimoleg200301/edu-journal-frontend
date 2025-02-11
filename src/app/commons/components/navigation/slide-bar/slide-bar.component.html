@@ -1,0 +1,17 @@
+<div class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300"
+     [class.-translate-x-full]="!isOpen">
+  <div class="p-4 border-b flex justify-between items-center">
+    <h2 class="text-xl font-bold text-gray-800">Меню</h2>
+    <button (click)="toggle()" class="text-gray-600 hover:text-gray-900">&times;</button>
+  </div>
+  <ul class="space-y-4 p-4">
+    <li *ngFor="let item of menuItems" class="px-4 py-2 rounded hover:bg-gray-200 cursor-pointer">
+      {{ item.label }}
+    </li>
+  </ul>
+</div>
+
+<!-- Кнопка для открытия -->
+<button (click)="toggle()" class="fixed top-4 left-4 p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600">
+  ☰
+</button>
