@@ -15,7 +15,7 @@ export class StudentPageService {
   constructor(private route: ActivatedRoute ) {
   }
 
-  getStudentList() {
+  getStudentList(): Observable<StudentList[]> {
     return this.http.get<StudentList[]>(`${this.baseApiUrl}/`)
   }
 

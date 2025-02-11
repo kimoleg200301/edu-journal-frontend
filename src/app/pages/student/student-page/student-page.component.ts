@@ -5,9 +5,7 @@ import {StudentPageService} from '../../../data-access/services/student-page.ser
 
 @Component({
   selector: 'app-student-page',
-  imports: [
-    JsonPipe
-  ],
+  imports: [],
   standalone: true,
   templateUrl: './student-page.component.html',
 })

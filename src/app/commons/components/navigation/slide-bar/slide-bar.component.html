@@ -1,3 +1,8 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+     [class.hidden]="!isOpen"
+     (click)="toggle()">
+</div>
+
 <div class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300"
      [class.-translate-x-full]="!isOpen">
   <div class="p-4 border-b flex justify-between items-center">
@@ -5,13 +10,20 @@
     <button (click)="toggle()" class="text-gray-600 hover:text-gray-900">&times;</button>
   </div>
   <ul class="space-y-4 p-4">
-    @for (item of menuItems; track item.label) {
-      <li class="px-4 py-2 rounded hover:bg-gray-200 cursor-pointer">
+    @for (item of menuItems; track item.index) {
+      <li class="px-4 py-2 rounded hover:bg-gray-200 cursor-pointer"
+          [class.bg-blue-600]="(selectedItem$ | async) === item.route"
+          [class.text-white]="(selectedItem$ | async) === item.route"
+          [class.hover:bg-blue-400]="(selectedItem$ | async) === item.route"
+          (click)="onItemClick(item)">
         {{ item.label }}
       </li>
     }
   </ul>
 </div>
-<button (click)="toggle()" class="fixed top-4 left-4 p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600">
-  ☰
-</button>
+@if (!isOpen) {
+  <button (click)="toggle()" class="fixed top-4 left-4 p-2 pl-4 pr-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600">
+    ☰ Меню
+  </button>
+}
+

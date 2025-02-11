@@ -19,11 +19,9 @@ import {SlideBarComponent} from './commons/components/navigation/slide-bar/slide
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, SubjectPageComponent, StudentListComponent, GroupPageComponent, InGroupPageComponent, SelectGroupPageComponent, SelectSubjectPageComponent, StudentCardPageComponent, SubjectCardPageComponent, GroupCardPageComponent, AddStudentPageComponent, AddStudentsInGroupPageComponent, SlideBarComponent],
+  imports: [RouterOutlet, FormsModule, SlideBarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'edu-journal-frontend';
-  age = 0;
 }
