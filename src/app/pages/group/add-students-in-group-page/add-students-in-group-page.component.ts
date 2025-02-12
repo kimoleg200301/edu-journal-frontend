@@ -1,41 +1,53 @@
 import {Component, inject} from '@angular/core';
-import {StudentPageService} from '../../../data-access/services/student-page.service';
 import {StudentList} from '../../../data-access/interfaces/student-page.interface';
-import {response} from 'express';
+import {GroupPageService} from '../../../data-access/services/group-page.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+
+export interface Student_ids {
+  student_id: number;
+}
 
 @Component({
   selector: 'app-add-students-in-group-page',
-  imports: [],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './add-students-in-group-page.component.html',
   standalone: true
 })
 export class AddStudentsInGroupPageComponent {
-  studentPageService = inject(StudentPageService);
+  groupPageService = inject(GroupPageService);
+  edu_group_id = 0;
   studentsList: StudentList[] = [];
+  student_ids: Student_ids[] = [];
 
-  constructor() {
-    this.studentPageService.getStudentList()
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
+    this.groupPageService.getUnaddedStudentsByGroupId()
       .subscribe(value => {
         this.studentsList = value;
       });
   }
 
-  onAddStudents() {
-    const newStudents = {
-      student_id: 0,
-      firstname: '',
-      lastname: '',
-      birth_date: '',
-      gender: '',
-      iin: '',
-      living_adress: '',
-      edu_group_id: 0
-    };
+  toggleSelection(student_id: number, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
 
-    this.studentPageService.saveStudent(newStudents)
+    if (isChecked) {
+      this.student_ids.push({ student_id });
+    } else {
+      this.student_ids = this.student_ids.filter(student => student.student_id !== student_id);
+    }
+  }
+
+  onAddStudents() {
+    console.log(this.edu_group_id);
+    console.log(this.student_ids);
+    this.groupPageService.addStudentsInGroup(this.student_ids, this.edu_group_id)
       .subscribe({
-        next: response => console.log('Успешно добавлен: ', response),
-        error: err => console.error('Ошибка добавления: ', err)
+        next: response => console.log('Успешно добавлены: ', response),
+        error: error => console.log('Ошибка добавления: ', error),
       });
+    this.router.navigate(['/inGroup'], { queryParams: { edu_group_id: this.edu_group_id } });
   }
 }

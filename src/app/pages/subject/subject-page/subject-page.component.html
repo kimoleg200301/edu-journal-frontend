@@ -1,9 +1,9 @@
 <div class="space-y-10">
   <div class="container mx-auto my-10 max-w-5xl bg-white shadow-lg rounded-lg">
     <div class="flex items-center justify-between px-6 py-4 border-b">
-      <h1 class="text-2xl font-bold text-gray-800">Предметы</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Дисциплины</h1>
       <button (click)="onAddSubject()" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-        + Добавить предмет
+        + Добавить дисциплину
       </button>
     </div>
 
@@ -25,10 +25,10 @@
               <td class="px-6 py-4 text-gray-700">{{ subjectList.subject_code }}</td>
               <td class="px-6 py-4 text-gray-700">{{ subjectList.credits }}</td>
               <td class="px-6 py-4 space-x-2">
-                <button (click)="onEditSubject(subjectList)" class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
+                <button (click)="onEditSubject(subjectList.subject_id)" class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
                   Редактировать
                 </button>
-                <button class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                <button (click)="onDeleteSubject(subjectList.subject_id)" class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">
                   Удалить
                 </button>
               </td>

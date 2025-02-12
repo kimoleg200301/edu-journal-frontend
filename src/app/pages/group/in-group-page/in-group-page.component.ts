@@ -1,6 +1,9 @@
 import {Component, inject} from '@angular/core';
-import {InGroupPageService} from '../../../data-access/services/in-group-page.service';
-import {StudentsInGroup} from '../../../data-access/interfaces/in-group-page.interface';
+import {GroupPageService} from '../../../data-access/services/group-page.service';
+import {StudentList} from '../../../data-access/interfaces/student-page.interface';
+import {ActivatedRoute, Router} from '@angular/router';
+import {map} from 'rxjs/operators';
+import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-in-group-page',
@@ -9,13 +12,28 @@ import {StudentsInGroup} from '../../../data-access/interfaces/in-group-page.int
   standalone: true
 })
 export class InGroupPageComponent {
-  getStudentsInGroup = inject(InGroupPageService);
-  studentsInGroup: StudentsInGroup[] = [];
+  groupPageService = inject(GroupPageService);
+  edu_group_id = 0;
+  studentsInGroup: StudentList[] = [];
 
-  constructor() {
-    this.getStudentsInGroup.getStudentsInGroup()
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
+    this.groupPageService.getStudentsByGroupId()
       .subscribe(value => {
         this.studentsInGroup = value;
       });
+  }
+
+  onDeleteStudentFromGroup(student_id: number) {
+    this.groupPageService.deleteStudentFromGroup(student_id)
+    .subscribe({
+      next: (response) => console.log('Successfully deleted', response),
+      error: (error) => console.error('Failed to delete student', error)
+    });
+    window.location.reload()
+  }
+
+  onAddStudentsInGroup() {
+    this.router.navigate(['/addStudentsInGroup'], { queryParams: { edu_group_id: this.edu_group_id }})
   }
 }

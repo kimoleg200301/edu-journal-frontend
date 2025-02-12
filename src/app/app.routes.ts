@@ -14,6 +14,7 @@ import {
 import {SelectGroupPageComponent} from './pages/journal/select-group-page/select-group-page.component';
 import {SelectSubjectPageComponent} from './pages/journal/select-subject-page/select-subject-page.component';
 import {AddSubjectPageComponent} from './pages/subject/add-subject-page/add-subject-page.component';
+import {AddGroupPageComponent} from './pages/group/add-group-page/add-group-page.component';
 
 export const routes: Routes = [
   { path: '', component: StudentListComponent },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'addSubject', component: AddSubjectPageComponent},
   { path: 'subjectCard', component: SubjectCardPageComponent },
   { path: 'groupList', component: GroupPageComponent },
+  { path: 'addGroup', component: AddGroupPageComponent },
   { path: 'groupCard', component: GroupCardPageComponent },
   { path: 'inGroup', component: InGroupPageComponent },
   { path: 'addStudentsInGroup', component: AddStudentsInGroupPageComponent },

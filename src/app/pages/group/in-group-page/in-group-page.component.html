@@ -2,7 +2,7 @@
   <div class="container mx-auto my-10 max-w-5xl bg-white shadow-lg rounded-lg">
     <div class="flex items-center justify-between px-6 py-4 border-b">
       <h1 class="text-2xl font-bold text-gray-800">Список студентов группы (название группы)</h1>
-      <button class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+      <button (click)="onAddStudentsInGroup()" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
         + Добавить студентов в группу
       </button>
     </div>
@@ -13,6 +13,10 @@
         <tr class="bg-gray-100 text-left">
           <th class="px-6 py-3 text-sm font-medium text-gray-600">Имя</th>
           <th class="px-6 py-3 text-sm font-medium text-gray-600">Фамилия</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-600">Дата Рождения</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-600">Пол</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-600">ИИН</th>
+          <th class="px-6 py-3 text-sm font-medium text-gray-600">Адрес проживания</th>
           <th class="px-6 py-3 text-sm font-medium text-gray-600">Действия</th>
         </tr>
         </thead>
@@ -22,8 +26,12 @@
             <tr class="border-t">
               <td class="px-6 py-4 text-gray-700">{{ studentInGroup.firstname }}</td>
               <td class="px-6 py-4 text-gray-700">{{ studentInGroup.lastname }}</td>
+              <td class="px-6 py-4 text-gray-700">{{ studentInGroup.birth_date }}</td>
+              <td class="px-6 py-4 text-gray-700">{{ studentInGroup.gender }}</td>
+              <td class="px-6 py-4 text-gray-700">{{ studentInGroup.iin }}</td>
+              <td class="px-6 py-4 text-gray-700">{{ studentInGroup.living_adress }}</td>
               <td class="px-6 py-4 space-x-2">
-                <button class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                <button (click)="onDeleteStudentFromGroup(studentInGroup.student_id)" class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">
                   Удалить
                 </button>
               </td>

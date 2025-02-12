@@ -14,18 +14,27 @@ export class StudentListComponent {
   studentPageService = inject(StudentPageService);
   studentsList: StudentList[] = [];
 
-  constructor(private route: Router) {
+  constructor(private router: Router) {
     this.studentPageService.getStudentList()
       .subscribe(value => {
         this.studentsList = value
       });
   }
 
-  onEditStudent(studentId: StudentList) {
-    this.route.navigate(['/studentCard'], { queryParams: { student_id: studentId.student_id} });
+  onEditStudent(studentId: number) {
+    this.router.navigate(['/studentCard'], { queryParams: { student_id: studentId} });
   }
 
   onAddStudent() {
-    this.route.navigate(['/addStudent']);
+    this.router.navigate(['/addStudent']);
+  }
+
+  onDeleteStudent(studentId: number) {
+    this.studentPageService.deleteStudent(studentId)
+    .subscribe({
+      next: (response) => console.log('Successfully deleted', response),
+      error: (error) => console.error('Failed to delete student', error)
+    });
+    window.location.reload();
   }
 }

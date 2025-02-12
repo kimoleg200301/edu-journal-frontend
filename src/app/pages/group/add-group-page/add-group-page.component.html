@@ -1,0 +1,16 @@
+<div class="space-y-10">
+  <div class="container mx-auto my-10 max-w-5xl bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Создание группы</h1>
+    <form #groupForm="ngForm" (ngSubmit)="onAddGroup()" novalidate>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <label class="block text-gray-700">Название</label>
+          <input type="text" [(ngModel)]="newGroup.name" name="firstname" class="w-full p-2 border rounded" required placeholder="Имя" />
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end space-x-4">
+        <button type="submit" class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600" [disabled]="groupForm.invalid" >Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>

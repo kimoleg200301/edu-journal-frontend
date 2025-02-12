@@ -34,4 +34,16 @@ export class SubjectPageService {
       withCredentials: true
     });
   }
+
+  updateSubject(data: SubjectList): Observable<SubjectList> {
+    return this.http.put<SubjectList>(`${this.baseApiUrl}/update_subject`, data, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+  }
+
+  deleteSubject(subject_id: number): Observable<Object> {
+    console.log(subject_id);
+    return this.http.delete(`${this.baseApiUrl}/delete_subject/${subject_id}`);
+  }
 }

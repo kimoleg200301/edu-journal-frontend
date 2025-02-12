@@ -10,21 +10,30 @@ import {Router} from '@angular/router';
   templateUrl: './subject-page.component.html',
 })
 export class SubjectPageComponent {
-  subjectListService = inject(SubjectPageService);
+  subjectPageService = inject(SubjectPageService);
   subjectsList: SubjectList[] = [];
 
   constructor(private route: Router) {
-    this.subjectListService.getSubjectList()
+    this.subjectPageService.getSubjectList()
       .subscribe(value => {
         this.subjectsList = value;
       })
   }
 
-  onEditSubject(subjectId: SubjectList) {
-    this.route.navigate(['subjectCard'], { queryParams: { subject_id: subjectId.subject_id } });
+  onEditSubject(subjectId: number) {
+    this.route.navigate(['/subjectCard'], { queryParams: { subject_id: subjectId } });
   }
 
   onAddSubject() {
-    this.route.navigate(['addSubject']);
+    this.route.navigate(['/addSubject']);
+  }
+
+  onDeleteSubject(subjectId: number) {
+    this.subjectPageService.deleteSubject(subjectId)
+      .subscribe({
+        next: (response) => console.log('Successfully deleted', response),
+        error: (error) => console.error('Failed to delete subject', error)
+      });
+    window.location.reload();
   }
 }

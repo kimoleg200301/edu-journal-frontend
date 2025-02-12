@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {SubjectPageService} from '../../../data-access/services/subject-page.service';
 import {SubjectList} from '../../../data-access/interfaces/subject-page.interface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-subject-page',
@@ -20,11 +21,15 @@ export class AddSubjectPageComponent {
     credits: 0
   }
 
+  constructor(private router: Router) {
+  }
+
   onAddSubject() {
     this.subjectPageService.saveSubject(this.newSubject)
       .subscribe({
         next: response => console.log('Успешно добавлен: ', response),
         error: err => console.error('Ошибка добавления: ', err)
       });
+    this.router.navigate(['/subjectList']);
   }
 }

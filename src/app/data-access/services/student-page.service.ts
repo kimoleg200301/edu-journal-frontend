@@ -12,7 +12,7 @@ export class StudentPageService {
   http = inject(HttpClient);
   baseApiUrl = 'http://localhost:8080/api/v1/students';
 
-  constructor(private route: ActivatedRoute ) {
+  constructor(private router: ActivatedRoute ) {
   }
 
   getStudentList(): Observable<StudentList[]> {
@@ -20,8 +20,8 @@ export class StudentPageService {
   }
 
   getStudentById(): Observable<StudentList> {
-    return this.route.queryParamMap.pipe(
-      map(params => params.get('student_id') || '0'),
+    return this.router.queryParamMap.pipe(
+      map(params => params.get('student_id')),
       switchMap(student_id =>
         this.http.get<StudentList>(`${this.baseApiUrl}/info_student?student_id=${student_id}`)
       )
@@ -33,5 +33,17 @@ export class StudentPageService {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
+  }
+
+  updateStudent(data: StudentList): Observable<StudentList> {
+    return this.http.put<StudentList>(`${this.baseApiUrl}/update_student`, data, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+  }
+
+  deleteStudent(student_id: number): Observable<Object> {
+    console.log(student_id);
+    return this.http.delete(`${this.baseApiUrl}/delete_student/${student_id}`);
   }
 }
