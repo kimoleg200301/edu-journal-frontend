@@ -2,7 +2,7 @@
   <div class="container mx-auto my-10 max-w-6xl bg-white shadow-lg rounded-lg">
     <div class="flex items-center justify-between px-6 py-4 border-b">
       <h1 class="text-2xl font-bold text-gray-800">Студенты</h1>
-      <button class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+      <button (click)="onAddStudent()" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
         + Добавить студента
       </button>
     </div>
@@ -32,7 +32,7 @@
               <td class="px-6 py-4 text-gray-700">{{ studentList.living_adress }}</td>
               <td class="px-6 py-4 text-gray-700">{{ studentList.edu_group_id }}</td>
               <td class="px-6 py-4 space-x-2">
-                <button class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
+                <button (click)="onEditStudent(studentList)" class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
                   Редактировать
                 </button>
                 <button class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600">

@@ -13,12 +13,14 @@ import {
 } from './pages/group/add-students-in-group-page/add-students-in-group-page.component';
 import {SelectGroupPageComponent} from './pages/journal/select-group-page/select-group-page.component';
 import {SelectSubjectPageComponent} from './pages/journal/select-subject-page/select-subject-page.component';
+import {AddSubjectPageComponent} from './pages/subject/add-subject-page/add-subject-page.component';
 
 export const routes: Routes = [
   { path: '', component: StudentListComponent },
   { path: 'addStudent', component: AddStudentPageComponent },
   { path: 'studentCard', component: StudentCardPageComponent },
   { path: 'subjectList', component: SubjectPageComponent },
+  { path: 'addSubject', component: AddSubjectPageComponent},
   { path: 'subjectCard', component: SubjectCardPageComponent },
   { path: 'groupList', component: GroupPageComponent },
   { path: 'groupCard', component: GroupCardPageComponent },

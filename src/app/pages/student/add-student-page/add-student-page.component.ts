@@ -14,14 +14,14 @@ import {FormsModule} from '@angular/forms';
 export class AddStudentPageComponent {
   studentPageService = inject(StudentPageService);
   newStudent: StudentList = {
-    student_id: null,
+    student_id: 0,
     firstname: '',
     lastname: '',
     birth_date: '',
     gender: '',
     iin: '',
     living_adress: '',
-    edu_group_id: null
+    edu_group_id: 0
   };
 
   onAddStudent() {

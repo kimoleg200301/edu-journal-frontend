@@ -27,4 +27,11 @@ export class SubjectPageService {
       )
     );
   }
+
+  saveSubject(data: SubjectList): Observable<SubjectList> {
+    return this.http.post<SubjectList>(`${this.baseApiUrl}/save_subject`, data, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+  }
 }
