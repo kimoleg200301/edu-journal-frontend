@@ -48,6 +48,6 @@ export class AddStudentsInGroupPageComponent {
         next: response => console.log('Успешно добавлены: ', response),
         error: error => console.log('Ошибка добавления: ', error),
       });
-    this.router.navigate(['/inGroup'], { queryParams: { edu_group_id: this.edu_group_id } });
+    this.router.navigate(['/inGroupStudents'], { queryParams: { edu_group_id: this.edu_group_id } });
   }
 }

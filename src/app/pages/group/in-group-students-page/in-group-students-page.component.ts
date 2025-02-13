@@ -6,12 +6,12 @@ import {map} from 'rxjs/operators';
 import {switchMap} from 'rxjs';
 
 @Component({
-  selector: 'app-in-group-page',
+  selector: 'app-in-group-students-page',
   imports: [],
-  templateUrl: './in-group-page.component.html',
+  templateUrl: './in-group-students-page.component.html',
   standalone: true
 })
-export class InGroupPageComponent {
+export class InGroupStudentsPageComponent {
   groupPageService = inject(GroupPageService);
   edu_group_id = 0;
   studentsInGroup: StudentList[] = [];

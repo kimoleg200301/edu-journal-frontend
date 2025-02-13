@@ -20,11 +20,24 @@ export class GroupPageComponent {
       });
   }
 
-  onEntryGroup(edu_group_id: number) {
-    this.router.navigate(['/inGroup'], { queryParams: { edu_group_id: edu_group_id } });
+  onEntryGroupStudents(edu_group_id: number) {
+    this.router.navigate(['/inGroupStudents'], { queryParams: { edu_group_id: edu_group_id } });
+  }
+
+  onEntryGroupSubjects(edu_group_id: number) {
+    this.router.navigate(['/inGroupSubjects'], { queryParams: { edu_group_id: edu_group_id } });
   }
 
   onAddGroup() {
     this.router.navigate(['/addGroup']);
+  }
+
+  onDeleteGroup(edu_group_id: number) {
+    this.groupPageService.deleteGroup(edu_group_id)
+      .subscribe({
+        next: (response) => console.log('Successfully deleted', response),
+        error: (error) => console.error('Failed to delete group', error)
+      });
+    window.location.reload();
   }
 }

@@ -5,9 +5,14 @@ import {Observable, switchMap} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {StudentList} from '../interfaces/student-page.interface';
+import {SubjectList} from '../interfaces/subject-page.interface';
 
 export interface Student_ids {
   student_id: number;
+}
+
+export interface Subject_ids {
+  subject_id: number;
 }
 
 @Injectable({
@@ -40,6 +45,11 @@ export class GroupPageService {
     });
   }
 
+  deleteGroup(edu_group_id: number) {
+    console.log(edu_group_id);
+    return this.http.delete(`${this.baseApiUrl}/delete_group/${edu_group_id}`);
+  }
+
   getStudentsByGroupId() {
     return this.route.queryParamMap.pipe(
       map(params => params.get('edu_group_id')),
@@ -60,6 +70,31 @@ export class GroupPageService {
 
   addStudentsInGroup(student_ids: Student_ids[], edu_group_id: number): Observable<Object> {
     return this.http.put(`${this.baseApiUrl}/add_unadded_students_in_group?edu_group_id=${edu_group_id}`, student_ids, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
+  }
+
+  getSubjectsByGroupId() {
+    return this.route.queryParamMap.pipe(
+      map(params => params.get('edu_group_id')),
+      switchMap(edu_group_id =>
+        this.http.get<SubjectList[]>(`${this.baseApiUrl}/added_subjects_by_group_id?edu_group_id=${edu_group_id}`)
+      )
+    );
+  }
+
+  getUnaddedSubjectsByGroupId(edu_group_id: number) {
+    return this.http.get<SubjectList[]>(`${this.baseApiUrl}/unadded_subjects_by_group_id?edu_group_id=${edu_group_id}`);
+  }
+
+  deleteSubjectFromGroup(edu_group_id: number, subject_id: number) {
+    console.log(subject_id);
+    return this.http.delete(`${this.baseApiUrl}/delete_subject_from_group?edu_group_id=${edu_group_id}&subject_id=${subject_id}`);
+  }
+
+  addSubjectsInGroup(subject_ids: Subject_ids[], edu_group_id: number): Observable<Object> {
+    return this.http.put(`${this.baseApiUrl}/add_subjects_in_group?edu_group_id=${edu_group_id}`, subject_ids, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });

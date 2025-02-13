@@ -7,7 +7,7 @@ import {SubjectPageComponent} from './pages/subject/subject-page/subject-page.co
 import {SubjectCardPageComponent} from './pages/subject/subject-card-page/subject-card-page.component';
 import {GroupPageComponent} from './pages/group/group-page/group-page.component';
 import {GroupCardPageComponent} from './pages/group/group-card-page/group-card-page.component';
-import {InGroupPageComponent} from './pages/group/in-group-page/in-group-page.component';
+import {InGroupStudentsPageComponent} from './pages/group/in-group-students-page/in-group-students-page.component';
 import {
   AddStudentsInGroupPageComponent
 } from './pages/group/add-students-in-group-page/add-students-in-group-page.component';
@@ -15,6 +15,10 @@ import {SelectGroupPageComponent} from './pages/journal/select-group-page/select
 import {SelectSubjectPageComponent} from './pages/journal/select-subject-page/select-subject-page.component';
 import {AddSubjectPageComponent} from './pages/subject/add-subject-page/add-subject-page.component';
 import {AddGroupPageComponent} from './pages/group/add-group-page/add-group-page.component';
+import {
+  AddSubjectsInGroupPageComponent
+} from './pages/group/add-subjects-in-group-page/add-subjects-in-group-page.component';
+import {InGroupSubjectsPageComponent} from './pages/group/in-group-subjects-page/in-group-subjects-page.component';
 
 export const routes: Routes = [
   { path: '', component: StudentListComponent },
@@ -26,8 +30,10 @@ export const routes: Routes = [
   { path: 'groupList', component: GroupPageComponent },
   { path: 'addGroup', component: AddGroupPageComponent },
   { path: 'groupCard', component: GroupCardPageComponent },
-  { path: 'inGroup', component: InGroupPageComponent },
+  { path: 'inGroupStudents', component: InGroupStudentsPageComponent },
+  { path: 'inGroupSubjects', component: InGroupSubjectsPageComponent },
   { path: 'addStudentsInGroup', component: AddStudentsInGroupPageComponent },
+  { path: 'addSubjectsInGroup', component: AddSubjectsInGroupPageComponent },
   { path: 'selectGroup', component: SelectGroupPageComponent },
   { path: 'selectSubject', component: SelectSubjectPageComponent },
 ];
