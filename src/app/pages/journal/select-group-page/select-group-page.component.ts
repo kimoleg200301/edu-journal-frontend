@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {SelectGroupPageService} from '../../../data-access/services/select-group-page.service';
-import {SelectGroupPageInterface} from '../../../data-access/interfaces/select-group-page.interface';
+import {Router} from '@angular/router';
+import {GroupPageService} from '../../../data-access/services/group-page.service';
+import {GroupList} from '../../../data-access/interfaces/group-page.interface';
 
 @Component({
   selector: 'app-select-group-page',
@@ -9,13 +10,17 @@ import {SelectGroupPageInterface} from '../../../data-access/interfaces/select-g
   standalone: true
 })
 export class SelectGroupPageComponent {
-  selectGroupPageService = inject(SelectGroupPageService);
-  groupsList: SelectGroupPageInterface[] = [];
+  groupPageService = inject(GroupPageService);
+  groupsList: GroupList[] = [];
 
-  constructor() {
-    this.selectGroupPageService.getGroupList()
+  constructor(private router: Router) {
+    this.groupPageService.getGroupList()
       .subscribe(value => {
         this.groupsList = value;
       });
+  }
+
+  onEntrySubject(edu_group_id: number) {
+    this.router.navigate(['/selectSubject'], { queryParams: {edu_group_id} });
   }
 }

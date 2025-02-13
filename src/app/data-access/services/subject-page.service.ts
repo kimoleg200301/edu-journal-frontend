@@ -21,7 +21,7 @@ export class SubjectPageService {
 
   getSubjectById(): Observable<SubjectList> {
     return this.route.queryParamMap.pipe(
-      map(params => params.get('subject_id') || '0'),
+      map(params => params.get('subject_id')),
       switchMap(subject_id =>
         this.http.get<SubjectList>(`${this.baseApiUrl}/info_subject?subject_id=${subject_id}`)
       )

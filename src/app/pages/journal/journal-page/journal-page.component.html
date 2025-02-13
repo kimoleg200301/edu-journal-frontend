@@ -1,0 +1,55 @@
+<div class="space-y-10">
+  <div class="container mx-auto my-10 max-w-7xl bg-white shadow-lg rounded-lg p-6">
+    <div class="flex items-center justify-between border-b pb-4">
+      <h1 class="text-2xl font-bold text-gray-800">Выставление оценок группы (выбранная группы)</h1>
+    </div>
+
+    <!-- Фильтры -->
+    <div class="flex space-x-4 my-4">
+
+      <div class="flex space-x-2">
+        <select [(ngModel)]="selectedMonth" class="px-4 py-2 border rounded">
+          @for (month of months; track month.value) {
+            <option [value]="month">{{ month.name }}</option>
+          }
+        </select>
+
+        <select [(ngModel)]="selectedYear" class="px-4 py-2 border rounded">
+          @for (year of years; track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Таблица -->
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse">
+        <thead>
+        <tr class="bg-gray-100 text-left">
+          <th class="px-4 py-2 text-sm font-medium text-gray-600">Имя</th>
+          <th class="px-4 py-2 text-sm font-medium text-gray-600">Фамилия</th>
+          @for (date of daysInMonth; track date) {
+            <th class="px-4 py-2 text-sm font-medium text-gray-600">
+              {{ date }}
+            </th>
+          }
+        </tr>
+        </thead>
+        <tbody>
+        @for (student of journals; track student.student_id) {
+          <tr class="border-t">
+            <td class="px-4 py-2 text-gray-700">{{ student.firstname }}</td>
+            <td class="px-4 py-2 text-gray-700">{{ student.lastname }}</td>
+            @for (date of daysInMonth; track date) {
+              <td class="px-4 py-2 text-center">
+                <input type="text" [(ngModel)]="grades" class="w-10 text-center border rounded">
+              </td>
+            }
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,7 @@ import {
   AddSubjectsInGroupPageComponent
 } from './pages/group/add-subjects-in-group-page/add-subjects-in-group-page.component';
 import {InGroupSubjectsPageComponent} from './pages/group/in-group-subjects-page/in-group-subjects-page.component';
+import {JournalPageComponent} from './pages/journal/journal-page/journal-page.component';
 
 export const routes: Routes = [
   { path: '', component: StudentListComponent },
@@ -36,7 +37,8 @@ export const routes: Routes = [
   { path: 'addSubjectsInGroup', component: AddSubjectsInGroupPageComponent },
   { path: 'selectGroup', component: SelectGroupPageComponent },
   { path: 'selectSubject', component: SelectSubjectPageComponent },
-];
+  { path: 'journal', component: JournalPageComponent }
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

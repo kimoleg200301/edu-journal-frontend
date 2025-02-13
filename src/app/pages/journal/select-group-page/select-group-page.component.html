@@ -18,7 +18,7 @@
             <tr class="border-t">
               <td class="px-6 py-4 text-gray-700">{{ groupList.name }}</td>
               <td class="px-6 py-4 space-x-2">
-                <button class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
+                <button (click)="onEntrySubject(groupList.edu_group_id)" class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
                   Перейти
                 </button>
               </td>
