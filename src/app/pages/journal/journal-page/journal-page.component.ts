@@ -4,12 +4,6 @@ import {JournalList} from '../../../data-access/interfaces/journal-page.interfac
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 
-export interface Grades {
-  student_id: number;
-  mark: number;
-  date_for: string;
-}
-
 @Component({
   selector: 'app-journal-page',
   imports: [
@@ -38,24 +32,40 @@ export class JournalPageComponent {
     { name: 'Декабрь', value: 12 }
   ];
   years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i); // 10 последних лет
-  selectedMonth = this.months[0].value; // фильтр месяца
+  selectedMonth = this.months[1].value; // фильтр месяца
   selectedYear = new Date().getFullYear(); // фильтр года
-  yearAndMonth: string = `${this.selectedYear}-${this.selectedMonth}`; // готовый фильтр для отправки
-  daysInMonth: number[] = [];
-
-  grades: Grades[] = [];
+  get yearAndMonth(): string {
+    return `${this.selectedYear}-${this.selectedMonth.toString().padStart(2, '0')}`;
+  }
+  daysInMonth: {
+    value: number;
+    index: number;
+  }[] = [{
+    value: 0,
+    index: 0
+  }];
 
   journals: JournalList[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute) {
+    this.updateDaysInMonth();
     this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
     this.subject_id = Number(this.route.snapshot.queryParamMap.get('subject_id'));
 
-    this.journalPageService.getJournal(this.edu_group_id, this.subject_id, this.yearAndMonth)
-      .subscribe(value => {
-        this.journals = value;
+    this.journalPageService.getJournal(this.edu_group_id, this.subject_id, "2025-02")
+      .subscribe((value) => {
+        this.journals = value
       });
     console.log(this.journals);
+    // console.log(this.journals[0].day);
+  }
+
+  updateDaysInMonth() {
+    const days: number = new Date(this.selectedYear, this.selectedMonth, 0).getDate();
+    this.daysInMonth = Array.from({ length: days }, (_, index) => ({
+      value: index + 1,
+      index: index
+    }));
   }
 
   // setMarks() {
