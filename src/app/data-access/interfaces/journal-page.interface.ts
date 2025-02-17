@@ -4,9 +4,9 @@ export interface JournalList {
   student_id: number;
   firstname: string;
   lastname: string;
-  mark: number | null;
-  date_for: string | null;
-  year: number | null;
-  month: number | null;
-  day: number | null;
+  mark: number;
+  date_for: string;
+  year: number;
+  month: number;
+  day: number;
 }

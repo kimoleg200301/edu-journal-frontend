@@ -35,8 +35,8 @@ export class StudentCardPageComponent {
   onUpdateStudent() {
     this.studentPageService.updateStudent(this.student)
       .subscribe({
-        next: response => console.log('Успешно обновлен: ', response),
-        error: error => console.log('Ошибка обновления: ', error),
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
       });
     this.route.navigate(['/']);
   }

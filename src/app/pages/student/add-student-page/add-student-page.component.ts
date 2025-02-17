@@ -31,8 +31,8 @@ export class AddStudentPageComponent {
   onAddStudent() {
     this.studentPageService.saveStudent(this.newStudent)
       .subscribe({
-        next: response => console.log('Успешно добавлен: ', response),
-        error: err => console.error('Ошибка добавления: ', err)
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
       });
     this.router.navigate(['/']);
   }

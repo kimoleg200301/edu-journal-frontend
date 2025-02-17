@@ -28,22 +28,22 @@ export class StudentPageService {
     );
   }
 
-  saveStudent(data: StudentList): Observable<StudentList> {
-    return this.http.post<StudentList>(`${this.baseApiUrl}/save_student`, data, {
+  saveStudent(data: StudentList): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseApiUrl}/save_student`, data, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
   }
 
-  updateStudent(data: StudentList): Observable<StudentList> {
-    return this.http.put<StudentList>(`${this.baseApiUrl}/update_student`, data, {
+  updateStudent(data: StudentList): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.baseApiUrl}/update_student`, data, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
   }
 
-  deleteStudent(student_id: number): Observable<Object> {
+  deleteStudent(student_id: number): Observable<{ message: string }> {
     console.log(student_id);
-    return this.http.delete(`${this.baseApiUrl}/delete_student/${student_id}`);
+    return this.http.delete<{ message: string }>(`${this.baseApiUrl}/delete_student/${student_id}`);
   }
 }

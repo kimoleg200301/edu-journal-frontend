@@ -31,10 +31,10 @@ export class StudentListComponent {
 
   onDeleteStudent(studentId: number) {
     this.studentPageService.deleteStudent(studentId)
-    .subscribe({
-      next: (response) => console.log('Successfully deleted', response),
-      error: (error) => console.error('Failed to delete student', error)
-    });
+      .subscribe({
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
+      });
     window.location.reload();
   }
 }

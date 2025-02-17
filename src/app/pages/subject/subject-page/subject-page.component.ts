@@ -31,8 +31,8 @@ export class SubjectPageComponent {
   onDeleteSubject(subjectId: number) {
     this.subjectPageService.deleteSubject(subjectId)
       .subscribe({
-        next: (response) => console.log('Successfully deleted', response),
-        error: (error) => console.error('Failed to delete subject', error)
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
       });
     window.location.reload();
   }

@@ -27,8 +27,8 @@ export class AddSubjectPageComponent {
   onAddSubject() {
     this.subjectPageService.saveSubject(this.newSubject)
       .subscribe({
-        next: response => console.log('Успешно добавлен: ', response),
-        error: err => console.error('Ошибка добавления: ', err)
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
       });
     this.router.navigate(['/subjectList']);
   }

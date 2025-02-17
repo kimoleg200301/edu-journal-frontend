@@ -4,6 +4,12 @@ import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {JournalList} from '../interfaces/journal-page.interface';
 
+export interface Grades {
+  student_id: number;
+  mark: number;
+  date_for: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +24,8 @@ export class JournalPageService {
     return this.http.get<JournalList[]>(`${this.baseApiUrl}/find_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}&date=${date}`);
   }
 
-  setMarks(journal: JournalList[], edu_group_id: number, subject_id: number): Observable<JournalList[]> {
-    return this.http.post<JournalList[]>(`${this.baseApiUrl}/set_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}`, journal, {
+  setMarks(grades: Grades[], edu_group_id: number, subject_id: number): Observable<{message: string}> {
+    return this.http.post<{message: string}>(`${this.baseApiUrl}/set_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}`, grades, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });

@@ -7,13 +7,13 @@
     <!-- Фильтры -->
     <div class="flex space-x-4 my-4">
       <div class="flex space-x-2">
-        <select [(ngModel)]="selectedMonth" class="px-4 py-2 border rounded">
+        <select [(ngModel)]="selectedMonth" (change)="updateJournal()" class="px-4 py-2 border rounded">
           @for (month of months; track month.value) {
-            <option [value]="month">{{ month.name }}</option>
+            <option [value]="month.value">{{ month.name }}</option>
           }
         </select>
 
-        <select [(ngModel)]="selectedYear" class="px-4 py-2 border rounded">
+        <select [(ngModel)]="selectedYear" (change)="updateJournal()" class="px-4 py-2 border rounded">
           @for (year of years; track year) {
             <option [value]="year">{{ year }}</option>
           }
@@ -36,23 +36,27 @@
         </tr>
         </thead>
         <tbody>
-          @for (student of journals; track student.student_id) {
+          @for (student of students; track student.student_id) {
             <tr class="border-t">
-              <td class="px-4 py-2 text-gray-700">{{ student.firstname }}</td>
-              <td class="px-4 py-2 text-gray-700">{{ student.lastname }}</td>
+              <td class="border px-4 py-2">{{ student.firstname }}</td>
+              <td class="border px-4 py-2">{{ student.lastname }}</td>
               @for (date of daysInMonth; track date.index) {
-                <td class="px-4 py-2 text-center">
-                  @if (student.day === date.value) {
-                    <input type="text" [(ngModel)]="student.mark" class="w-10 text-center border rounded">
-                  } @else {
-                    <input type="text" class="w-10 text-center border rounded">
-                  }
+                <td class="border px-4 py-2 text-center">
+                  <input
+                    type="text"
+                    min="0"
+                    max="100"
+                    class="w-10 text-center border rounded"
+                    [(ngModel)]="gradesMap[student.student_id][getDateFor(date.value)]">
                 </td>
               }
             </tr>
           }
         </tbody>
       </table>
+    </div>
+    <div class="mt-6 flex justify-end space-x-4">
+      <button (click)="setMarks()" type="submit" class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600">Сохранить</button>
     </div>
   </div>
 </div>

@@ -28,22 +28,22 @@ export class SubjectPageService {
     );
   }
 
-  saveSubject(data: SubjectList): Observable<SubjectList> {
-    return this.http.post<SubjectList>(`${this.baseApiUrl}/save_subject`, data, {
+  saveSubject(data: SubjectList): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseApiUrl}/save_subject`, data, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
   }
 
-  updateSubject(data: SubjectList): Observable<SubjectList> {
-    return this.http.put<SubjectList>(`${this.baseApiUrl}/update_subject`, data, {
+  updateSubject(data: SubjectList): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.baseApiUrl}/update_subject`, data, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
   }
 
-  deleteSubject(subject_id: number): Observable<Object> {
+  deleteSubject(subject_id: number): Observable<{ message: string }> {
     console.log(subject_id);
-    return this.http.delete(`${this.baseApiUrl}/delete_subject/${subject_id}`);
+    return this.http.delete<{ message: string }>(`${this.baseApiUrl}/delete_subject/${subject_id}`);
   }
 }
