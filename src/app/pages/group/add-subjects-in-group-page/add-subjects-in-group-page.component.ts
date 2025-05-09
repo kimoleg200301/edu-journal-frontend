@@ -42,8 +42,8 @@ export class AddSubjectsInGroupPageComponent {
     console.log(this.subject_ids);
     this.groupPageService.addSubjectsInGroup(this.subject_ids, this.edu_group_id)
       .subscribe({
-        next: response => console.log('Успешно добавлены: ', response),
-        error: error => console.log('Ошибка добавления: ', error),
+        next: (response: {message: string}) => alert(response.message),
+        error: (error: {message: string}) => alert(error.message),
       });
     this.router.navigate(['/inGroupSubjects'], { queryParams: { edu_group_id: this.edu_group_id } });
   }

@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {JournalList} from '../interfaces/journal-page.interface';
+import {StudentAttend} from '../interfaces/student-attend.interface';
 
 export interface Grades {
   student_id: number;
@@ -15,19 +16,58 @@ export interface Grades {
 })
 export class JournalPageService {
   http = inject(HttpClient);
+  private socket: WebSocket | undefined;
+  private messageSubject = new Subject<StudentAttend>();
   baseApiUrl = 'http://localhost:8080/api/v1/journals';
 
   constructor(private route: ActivatedRoute) {
+  }
+
+  connect(url: string): void {
+    this.socket = new WebSocket(url);
+
+    this.socket.onopen = () => {
+      console.log('✅ WebSocket соединение установлено');
+    };
+
+    this.socket.onmessage = (event) => {
+      console.log('📩 Сообщение от сервера');
+      try {
+        const parsed = JSON.parse(event.data)
+        this.messageSubject.next(parsed);
+      } catch (e) {
+        console.error('❌ Ошибка парсинга JSON:', e);
+      }
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('❌ Ошибка WebSocket:', error);
+    };
+
+    this.socket.onclose = (event) => {
+      console.log('❌ Соединение закрыто:', event);
+    };
   }
 
   getJournal(edu_group_id: number, subject_id: number, date: string): Observable<JournalList[]>  {
     return this.http.get<JournalList[]>(`${this.baseApiUrl}/find_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}&date=${date}`);
   }
 
-  setMarks(grades: Grades[], edu_group_id: number, subject_id: number): Observable<{message: string}> {
-    return this.http.post<{message: string}>(`${this.baseApiUrl}/set_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}`, grades, {
+  startSession(edu_group_id: number, subject_id: number, date: string, flag: boolean): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseApiUrl}/start_session?edu_group_id=${edu_group_id}&subject_id=${subject_id}&date=${date}&flag=${flag}`, {}, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    })
+  }
+
+  setMarks(grades: Grades[], edu_group_id: number, subject_id: number): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseApiUrl}/set_marks?edu_group_id=${edu_group_id}&subject_id=${subject_id}`, grades, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
+  }
+
+  onMessage(): Observable<StudentAttend> {
+    return this.messageSubject.asObservable();
   }
 }

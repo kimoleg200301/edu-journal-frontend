@@ -93,8 +93,8 @@ export class GroupPageService {
     return this.http.delete(`${this.baseApiUrl}/delete_subject_from_group?edu_group_id=${edu_group_id}&subject_id=${subject_id}`);
   }
 
-  addSubjectsInGroup(subject_ids: Subject_ids[], edu_group_id: number): Observable<Object> {
-    return this.http.put(`${this.baseApiUrl}/add_subjects_in_group?edu_group_id=${edu_group_id}`, subject_ids, {
+  addSubjectsInGroup(subject_ids: Subject_ids[], edu_group_id: number): Observable<{ message: string, error: string }> {
+    return this.http.put<{ message: string, error: string }>(`${this.baseApiUrl}/add_subjects_in_group?edu_group_id=${edu_group_id}`, subject_ids, {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true
     });
