@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {API_V1} from '../../commons/api.config';
 import {SubjectList} from '../interfaces/subject-page.interface';
 import {ActivatedRoute} from '@angular/router';
 import {Observable, switchMap} from 'rxjs';
@@ -10,7 +11,7 @@ import {map} from 'rxjs/operators';
 })
 export class SubjectPageService {
   http = inject(HttpClient);
-  baseApiUrl = 'http://localhost:8080/api/v1/subjects';
+  baseApiUrl = `${API_V1}/subjects`;
 
   constructor(private route: ActivatedRoute) {
   }

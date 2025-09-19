@@ -4,10 +4,17 @@ import {JournalList} from '../../../data-access/interfaces/journal-page.interfac
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {Message} from '../../../data-access/interfaces/message.interface';
-import {NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {HttpErrorResponse} from '@angular/common/http';
 import {StudentList} from '../../../data-access/interfaces/student-page.interface';
 import {StudentAttend} from '../../../data-access/interfaces/student-attend.interface';
+import {GroupPageService} from '../../../data-access/services/group-page.service';
+import {SubjectPageService} from '../../../data-access/services/subject-page.service';
+import {GroupList} from '../../../data-access/interfaces/group-page.interface';
+import {WS_ORIGIN} from '../../../commons/api.config';
+import { Chart } from 'chart.js/auto';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export interface Grades {
   student_id: number;
@@ -19,19 +26,25 @@ export interface Student {
   student_id: number;
   firstname: string;
   lastname: string;
-  image: string; // base64 строка или URL
+  image?: string; // base64 строка или URL
 }
 
 @Component({
   selector: 'app-journal-page',
-  imports: [FormsModule, NgIf],
+  imports: [FormsModule, NgIf, NgForOf],
   templateUrl: './journal-page.component.html',
   standalone: true
 })
 export class JournalPageComponent {
   journalPageService = inject(JournalPageService);
+  groupPageService = inject(GroupPageService);
+  subjectPageService = inject(SubjectPageService);
+
   edu_group_id: number = 0;
   subject_id: number = 0;
+
+  groupName: string = '';
+  subjectName: string = '';
 
   start = false;
 
@@ -92,6 +105,13 @@ export class JournalPageComponent {
   // { [studentId]: { [date: string]: number } }
   gradesMap: { [studentId: number]: { [date: string]: number } } = {};
 
+  sessionEnded = false;
+  presentStudents: Student[] = [];
+  absentStudents: Student[] = [];
+  skipStats: { firstname: string; lastname: string; absences: number; percent: number }[] = [];
+  mostSkippedStudent: { firstname: string; lastname: string } = { firstname: '', lastname: '' };
+  todayString: string = '';
+
   constructor(private route: ActivatedRoute) {
     this.updateDaysInMonth();
     this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
@@ -99,7 +119,7 @@ export class JournalPageComponent {
   }
 
   ngOnInit() {
-    this.journalPageService.connect('ws://localhost:8080/ws');
+    this.journalPageService.connect(`${WS_ORIGIN}/ws?edu_group_id=${this.edu_group_id}`);
 
     this.journalPageService.onMessage()
       .subscribe(msg => {
@@ -120,7 +140,28 @@ export class JournalPageComponent {
         }
       });
 
+    this.groupPageService.getGroupById().subscribe(result => {
+      this.groupName = result.name;
+    });
+
+    this.subjectPageService.getSubjectById().subscribe(result => {
+      this.subjectName = result.name;
+    })
+
+    this.todayString = this.getTodayDate();
     this.updateJournal();
+  }
+
+  getTodayDate(): string {
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = (today.getMonth() + 1).toString().padStart(2, '0');
+    const d = today.getDate().toString().padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  isFutureDate(date: string): boolean {
+    return date > this.todayString;
   }
 
   updateJournal() {
@@ -172,19 +213,20 @@ export class JournalPageComponent {
       .subscribe({
         next: (response: { message: string }) => {
           this.start = flag;
-          alert(response.message)
-          console.log(response.message)
+          alert(response.message);
+          if (!flag) {
+            setTimeout(() => {
+              this.generateReport();
+              this.sessionEnded = true;
+              this.markAbsentees();
+            }, 0);
+          }
         },
         error: (error: HttpErrorResponse) => {
           this.start = false;
-          alert(error.error.message)
-          console.log(error.error.message)
+          alert(error.error.message);
         }
       });
-
-    // if (flag) {
-    //   this.setMarks(true);
-    // }
   }
 
   // Метод для формирования итогового массива оценок и отправки данных
@@ -211,5 +253,129 @@ export class JournalPageComponent {
         error: (error: { message: string }) => alert(error.message),
       });
     window.location.reload();
+  }
+
+  generateReport() {
+    const totalDays = this.daysInMonth.length;
+    const attendanceMap = new Map<number, number>();
+
+    this.students.forEach(student => {
+      let presentDays = 0;
+      for (const day of this.daysInMonth) {
+        const date = this.getDateFor(day.value);
+        const mark = this.gradesMap[student.student_id]?.[date];
+        if (mark !== null && mark !== undefined) {
+          presentDays++;
+        }
+      }
+      attendanceMap.set(student.student_id, presentDays);
+    });
+
+    this.presentStudents = this.newStudents.filter(s => s.student_id !== 0);
+    const presentIds = new Set(this.presentStudents.map(s => s.student_id));
+    this.absentStudents = this.students.filter(s => !presentIds.has(s.student_id));
+
+    this.skipStats = this.students.map(s => {
+      const present = attendanceMap.get(s.student_id) || 0;
+      const absences = totalDays - present;
+      const percent = totalDays === 0 ? 0 : Math.round((absences / totalDays) * 100);
+      return { firstname: s.firstname, lastname: s.lastname, absences, percent };
+    });
+
+    this.mostSkippedStudent = this.skipStats.reduce((max, curr) => curr.absences > max.absences ? curr : max, this.skipStats[0]);
+
+    setTimeout(() => this.renderCharts(), 0);
+  }
+
+  renderCharts() {
+    const pieCtx = document.getElementById('pieChart') as HTMLCanvasElement;
+    const barCtx = document.getElementById('barChart') as HTMLCanvasElement;
+
+    if (!pieCtx || !barCtx) return;
+
+    const labels = this.skipStats.map(stat => `${stat.firstname} ${stat.lastname}`);
+    const data = this.skipStats.map(stat => stat.absences);
+
+    new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Пропуски',
+          data,
+          backgroundColor: [
+            '#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#E67E22', '#2ECC71', '#1ABC9C'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Пропуски по студентам',
+          data,
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  }
+
+  downloadReport() {
+    const reportElement = document.querySelector('.report-container') as HTMLElement;
+    if (!reportElement) return;
+
+    html2canvas(reportElement).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('attendance-report.pdf');
+    });
+  }
+
+  markAbsentees() {
+    const presentIds = new Set(this.newStudents.map(s => s.student_id));
+    const currentDate = this.getTodayDate();
+
+    this.students.forEach(student => {
+      if (!presentIds.has(student.student_id)) {
+        if (!this.gradesMap[student.student_id]) {
+          this.gradesMap[student.student_id] = {};
+        }
+        this.gradesMap[student.student_id][currentDate] = 0;
+      }
+    });
   }
 }

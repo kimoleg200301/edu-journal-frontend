@@ -11,6 +11,7 @@ import {GroupList} from '../../../data-access/interfaces/group-page.interface';
 })
 export class SelectGroupPageComponent {
   groupPageService = inject(GroupPageService);
+
   groupsList: GroupList[] = [];
 
   constructor(private router: Router) {

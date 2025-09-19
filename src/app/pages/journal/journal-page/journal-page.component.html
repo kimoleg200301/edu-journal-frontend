@@ -1,7 +1,7 @@
 <div class="space-y-10">
   <div class="container mx-auto my-10 max-w-7xl bg-white shadow-lg rounded-lg p-6">
     <div class="flex items-center justify-between border-b pb-4">
-      <h1 class="text-2xl font-bold text-gray-800">Выставление оценок группы (выбранная группы) по дисциплине (выбранная дисциплина)</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Выставление оценок группы <u><b>{{ groupName }}</b></u> по дисциплине <u><b>{{ subjectName }}</b></u></h1>
     </div>
 
     <!-- Фильтры -->
@@ -47,7 +47,8 @@
                     min="0"
                     max="100"
                     class="w-10 text-center border rounded"
-                    [(ngModel)]="gradesMap[student.student_id][getDateFor(date.value)]">
+                    [(ngModel)]="gradesMap[student.student_id][getDateFor(date.value)]"
+                    [disabled]="isFutureDate(getDateFor(date.value))">
                 </td>
               }
             </tr>
@@ -90,6 +91,53 @@
           </div>
         </div>
         }
+      </div>
+    </div>
+
+    <!-- Блок отчетности - появляется после завершения сессии -->
+    <div *ngIf="!start && sessionEnded" class="report-container mt-10 p-6 bg-blue-50 border rounded-lg">
+      <h2 class="text-xl font-bold mb-4">Отчет о посещаемости</h2>
+
+      <!-- 1. Список присутствующих и отсутствующих -->
+      <div class="mb-6">
+        <h3 class="font-semibold text-lg mb-2">Присутствовали:</h3>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let student of presentStudents">{{student.firstname}} {{student.lastname}}</li>
+        </ul>
+        <h3 class="font-semibold text-lg mt-4 mb-2">Отсутствовали:</h3>
+        <ul class="list-disc list-inside text-red-500">
+          <li *ngFor="let student of absentStudents">{{student.firstname}} {{student.lastname}}</li>
+        </ul>
+      </div>
+
+      <!-- 2. Кнопка скачать отчет -->
+      <button (click)="downloadReport()" class="mb-6 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+        Скачать отчет
+      </button>
+
+      <!-- 3. Статистика пропусков -->
+      <div class="mb-6">
+        <h3 class="font-semibold text-lg mb-2">Статистика пропусков</h3>
+        <ul>
+          <li *ngFor="let stat of skipStats">
+            {{stat.firstname}} {{stat.lastname}} — {{stat.absences}} пропуск(ов), {{stat.percent}}%
+          </li>
+        </ul>
+        <div class="mt-4 text-green-700 font-bold">
+          Чаще всего пропускает: {{mostSkippedStudent.firstname}} {{mostSkippedStudent.lastname}}
+        </div>
+      </div>
+
+      <!-- 4. Диаграммы по посещаемости -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="mb-2 font-semibold">Круговая диаграмма посещаемости</h4>
+          <canvas id="pieChart"></canvas>
+        </div>
+        <div>
+          <h4 class="mb-2 font-semibold">Столбчатая диаграмма по предметам</h4>
+          <canvas id="barChart"></canvas>
+        </div>
       </div>
     </div>
 

@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {API_V1} from '../../commons/api.config';
 import {StudentList} from '../interfaces/student-page.interface';
 import {ActivatedRoute} from '@angular/router';
 import {Observable, switchMap} from 'rxjs';
@@ -10,21 +11,27 @@ import {map} from 'rxjs/operators';
 })
 export class StudentPageService {
   http = inject(HttpClient);
-  baseApiUrl = 'http://localhost:8080/api/v1/students';
+  baseApiUrl = `${API_V1}/students`;
 
   constructor(private router: ActivatedRoute ) {
   }
 
   getStudentList(): Observable<StudentList[]> {
-    return this.http.get<StudentList[]>(`${this.baseApiUrl}/`)
+    return this.http.get<StudentList[]>(`${this.baseApiUrl}/`, {
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
+    });
   }
 
   getStudentById(): Observable<StudentList> {
     return this.router.queryParamMap.pipe(
       map(params => params.get('student_id')),
       switchMap(student_id =>
-        this.http.get<StudentList>(`${this.baseApiUrl}/info_student?student_id=${student_id}`)
-      )
+        this.http.get<StudentList>(`${this.baseApiUrl}/info_student?student_id=${student_id}`, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }),
+      ),
     );
   }
 

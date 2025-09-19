@@ -11,8 +11,11 @@ import {SubjectList} from '../../../data-access/interfaces/subject-page.interfac
 })
 export class InGroupSubjectsPageComponent {
   groupPageService = inject(GroupPageService);
+
   edu_group_id = 0;
   subjectsInGroup: SubjectList[] = [];
+
+  groupName: string = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
@@ -20,6 +23,12 @@ export class InGroupSubjectsPageComponent {
       .subscribe(value => {
         this.subjectsInGroup = value;
       });
+  }
+
+  ngOnInit() {
+    this.groupPageService.getGroupById().subscribe(result => {
+      this.groupName = result.name;
+    });
   }
 
   onDeleteSubjectFromGroup(subject_id: number) {

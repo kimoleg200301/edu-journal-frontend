@@ -13,8 +13,11 @@ import {switchMap} from 'rxjs';
 })
 export class InGroupStudentsPageComponent {
   groupPageService = inject(GroupPageService);
+
   edu_group_id = 0;
   studentsInGroup: StudentList[] = [];
+
+  groupName: string = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
@@ -22,6 +25,12 @@ export class InGroupStudentsPageComponent {
       .subscribe(value => {
         this.studentsInGroup = value;
       });
+  }
+
+  ngOnInit() {
+    this.groupPageService.getGroupById().subscribe(result => {
+      this.groupName = result.name
+    });
   }
 
   onDeleteStudentFromGroup(student_id: number) {

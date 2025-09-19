@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {API_V1} from '../../commons/api.config';
 import {ActivatedRoute} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {JournalList} from '../interfaces/journal-page.interface';
@@ -18,7 +19,7 @@ export class JournalPageService {
   http = inject(HttpClient);
   private socket: WebSocket | undefined;
   private messageSubject = new Subject<StudentAttend>();
-  baseApiUrl = 'http://localhost:8080/api/v1/journals';
+  baseApiUrl = `${API_V1}/journals`;
 
   constructor(private route: ActivatedRoute) {
   }
@@ -66,6 +67,14 @@ export class JournalPageService {
       withCredentials: true
     });
   }
+
+  // getReport() {
+  //   return this.http.get('/api/reports/' + sessionId, { responseType: 'blob' })
+  //     .subscribe(blob => {
+  //       const url = window.URL.createObjectURL(blob);
+  //       window.open(url, '_blank');
+  //     });
+  // }
 
   onMessage(): Observable<StudentAttend> {
     return this.messageSubject.asObservable();

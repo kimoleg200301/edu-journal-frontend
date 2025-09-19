@@ -16,6 +16,8 @@ export class SelectSubjectPageComponent {
   edu_group_id: number = 0;
   subjectsList: SubjectList[] = [];
 
+  groupName: string = '';
+
   constructor(private router: Router, private route: ActivatedRoute) {
     this.edu_group_id = Number(this.route.snapshot.queryParamMap.get('edu_group_id'));
 
@@ -23,6 +25,12 @@ export class SelectSubjectPageComponent {
       .subscribe(value => {
         this.subjectsList = value;
       });
+  }
+
+  ngOnInit() {
+    this.groupPageService.getGroupById().subscribe(result => {
+      this.groupName = result.name;
+    });
   }
 
   onEntrySubject(subject_id: number) {
